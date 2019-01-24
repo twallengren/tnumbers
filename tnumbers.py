@@ -10,7 +10,7 @@ class Zero():
     to zero.
     '''
 
-    def plus(self, other):
+    def __add__(self, other):
         '''
         Zero is the additive identity.
         '''
@@ -47,7 +47,7 @@ class One():
     to one.
     '''
 
-    def plus(self, other):
+    def __add__(self, other):
         '''
         Adding 1 returns the successor of other.
         '''
@@ -91,22 +91,35 @@ class AbstractBinary():
     but it will still display as expected ie:
 
     repr(four) = [AbOne, AbZero, AbZero]
-    
+
+    this is done because it is quicker to append to the end of the list than
+    it is to push something to the beginning of the list.
     '''
 
     def __init__(self, digits):
+        '''
+        Initialize abstract binary. Set digit list on self.
+        '''
 
         self.digits = digits
 
     def __repr__(self):
+        '''
+        Show digit list in reverse in shell.
+        '''
 
         return str(self.digits[::-1])
 
-    def __plus__(self, other):
+    def __add__(self, other):
 
         pass
 
     def __eq__(self, other):
+        '''
+        Define equality for abstract binary numbers.
+        1) digit list must be same length
+        2) digits must be equivalent one for one between the lists
+        '''
 
         if len(self.digits) != len(other.digits):
 
@@ -117,27 +130,20 @@ class AbstractBinary():
             return all([self.digits[index] == other.digits[index] for index in range(len(self.digits))])
 
     def parity(self):
+        '''
+        Number is even if first digit is 0, odd otherwise.
+        '''
 
         return EVEN if isinstance(self.digits[0], Zero) else ODD
 
-################################################################################
-################################################################################
+    def successor(self):
+        '''
+        Return successor of Abstract Binary.
+        '''
 
-def create_successor(abstract_number):
+        newdigits = list(self.digits)
 
-    if isinstance(abstract_number, Zero):
-
-        return One()
-
-    elif isinstance(abstract_number, One):
-
-        return AbstractBinary([Zero(), One()])
-
-    else:
-
-        newdigits = list(abstract_number.digits)
-
-        for index,digit in enumerate(abstract_number.digits):
+        for index,digit in enumerate(self.digits):
 
             if isinstance(digit, Zero):
 
@@ -154,5 +160,8 @@ def create_successor(abstract_number):
             newdigits.append(One())
 
         return AbstractBinary(newdigits)
+
+################################################################################
+################################################################################
 
             
