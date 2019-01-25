@@ -168,6 +168,9 @@ class AbstractBinary():
         return AbstractBinary(newdigits)
 
     def add_digit_lists(self, digitlist1, digitlist2):
+        '''
+        Function to add binary digit lists. Used in the __add__ method.
+        '''
 
         carrylist = [Zero()]
         sumlist = []
