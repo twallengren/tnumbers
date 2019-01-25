@@ -10,6 +10,8 @@ class Zero():
     to zero.
     '''
 
+    ############################################################################
+
     def parity(self):
         '''
         Zero is an even number.
@@ -17,12 +19,16 @@ class Zero():
 
         return EVEN
 
+    ############################################################################
+
     def __repr__(self):
         '''
         How to display this class to the shell.
         '''
 
         return 'Zero'
+
+    ############################################################################
 
     def __eq__(self, other):
         '''
@@ -40,6 +46,8 @@ class One():
     to one.
     '''
 
+    ############################################################################
+
     def parity(self):
         '''
         One is an odd number.
@@ -47,12 +55,16 @@ class One():
 
         return ODD
 
+    ############################################################################
+
     def __repr__(self):
         '''
         How to display this class to the shell.
         '''
 
         return 'One'
+
+    ############################################################################
 
     def __eq__(self, other):
         '''
@@ -74,12 +86,16 @@ class AbstractBinary():
     four = AbstractBinary([One(), Zero(), Zero()])
     '''
 
+    ############################################################################
+
     def __init__(self, digits):
         '''
         Initialize abstract binary. Set digit list on self.
         '''
 
         self.digits = digits[::-1]
+
+    ############################################################################
 
     def __repr__(self):
         '''
@@ -88,16 +104,39 @@ class AbstractBinary():
 
         return str(self.digits[::-1])
 
+    ############################################################################
+
     def __len__(self):
 
         return len(self.digits)
+
+    ############################################################################
 
     def __add__(self, other):
         '''
         Define behavior of the + operator for abstract binary numbers.
         '''
 
-        return AbstractBinary(self.add_digit_lists(self.digits, other.digits)[::-1])   
+        return AbstractBinary(self.add_digit_lists(self.digits, other.digits)[::-1])
+
+    ############################################################################
+
+    def __mul__(self, other):
+        '''
+        Define behavior of the * operator for abstract binary numbers.
+        '''
+
+        count = AbstractBinary([One()])
+        product = AbstractBinary(self.digits[::-1])
+
+        while count != other:
+
+            product = product + AbstractBinary(self.digits[::-1])
+            count = count.successor()
+
+        return product
+
+    ############################################################################
 
     def __eq__(self, other):
         '''
@@ -114,12 +153,16 @@ class AbstractBinary():
 
             return all([self.digits[index] == other.digits[index] for index in range(len(self.digits))])
 
+    ############################################################################
+
     def parity(self):
         '''
         Number is even if first digit is 0, odd otherwise.
         '''
 
         return EVEN if isinstance(self.digits[0], Zero) else ODD
+
+    ############################################################################
 
     def successor(self):
         '''
@@ -144,7 +187,9 @@ class AbstractBinary():
 
             newdigits.append(One())
 
-        return AbstractBinary(newdigits)
+        return AbstractBinary(newdigits[::-1])
+
+    ############################################################################
 
     def add_digit_lists(self, digitlist1, digitlist2):
         '''
@@ -196,6 +241,23 @@ class AbstractBinary():
             return sumlist
 
         return self.add_digit_lists(sumlist, carrylist)
+
+    ############################################################################
+
+    def native(self):
+        '''
+        Method to translate abstract binary to python int.
+        '''
+
+        native = 0
+
+        for index,digit in enumerate(self.digits):
+
+            if isinstance(digit,One):
+
+                native = native + 2**index
+
+        return native
 
 ################################################################################
 ################################################################################
