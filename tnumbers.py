@@ -92,15 +92,7 @@ class AbstractBinary():
     Input a list of digits of the above zero and one class. ie to create an
     AbstractBinary instance of the number four, you would write:
 
-    four = AbstractBinary([Zero(), Zero(), One()])
-
-    note that the input is backwards (binary would normally go right to left)
-    but it will still display as expected ie:
-
-    repr(four) = [AbOne, AbZero, AbZero]
-
-    this is done because it is quicker to append to the end of the list than
-    it is to push something to the beginning of the list.
+    four = AbstractBinary([One(), Zero(), Zero()])
     '''
 
     def __init__(self, digits):
@@ -108,7 +100,7 @@ class AbstractBinary():
         Initialize abstract binary. Set digit list on self.
         '''
 
-        self.digits = digits
+        self.digits = digits[::-1]
 
     def __repr__(self):
         '''
@@ -126,7 +118,7 @@ class AbstractBinary():
         Define behavior of the + operator for abstract binary numbers.
         '''
 
-        return AbstractBinary(self.add_digit_lists(self.digits, other.digits))   
+        return AbstractBinary(self.add_digit_lists(self.digits, other.digits)[::-1])   
 
     def __eq__(self, other):
         '''
