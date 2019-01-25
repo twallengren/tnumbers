@@ -50,9 +50,16 @@ class One():
     def __add__(self, other):
         '''
         Adding 1 returns the successor of other.
+        Only defined for other instances of Zero and One.
         '''
 
-        return create_successor(other)
+        if isinstance(other,Zero):
+
+            return self
+
+        elif isinstance(other,One):
+
+            return AbstractBinary([Zero(), One()])
 
     def parity(self):
         '''
@@ -110,9 +117,16 @@ class AbstractBinary():
 
         return str(self.digits[::-1])
 
-    def __add__(self, other):
+    def __len__(self):
 
-        pass
+        return len(self.digits)
+
+    def __add__(self, other):
+        '''
+        Define behavior of the + operator for abstract binary numbers.
+        '''
+
+        return AbstractBinary(self.add_digit_lists(self.digits, other.digits))   
 
     def __eq__(self, other):
         '''
@@ -121,7 +135,7 @@ class AbstractBinary():
         2) digits must be equivalent one for one between the lists
         '''
 
-        if len(self.digits) != len(other.digits):
+        if len(self) != len(other):
 
             return False
 
@@ -144,7 +158,7 @@ class AbstractBinary():
         newdigits = list(self.digits)
 
         for index,digit in enumerate(self.digits):
-
+            
             if isinstance(digit, Zero):
 
                 newdigits[index] = One()
@@ -160,6 +174,54 @@ class AbstractBinary():
             newdigits.append(One())
 
         return AbstractBinary(newdigits)
+
+    def add_digit_lists(self, digitlist1, digitlist2):
+
+        carrylist = [Zero()]
+        sumlist = []
+
+        if len(digitlist1) < len(digitlist2):
+
+            shortlist = digitlist1
+            longlist = digitlist2
+
+        else:
+
+            shortlist = digitlist2
+            longlist = digitlist1
+
+        for index,digit in enumerate(shortlist):
+
+            otherdigit = longlist[index]
+
+            if isinstance(digit,Zero):
+
+                sumlist.append(otherdigit)
+                carrylist.append(Zero())
+
+                continue
+
+            if isinstance(otherdigit,Zero):
+
+                sumlist.append(digit)
+                carrylist.append(Zero())
+
+                continue
+
+            sumlist.append(Zero())
+            carrylist.append(One())
+
+        while index < len(longlist) - 1:
+
+            index = index + 1
+
+            sumlist.append(longlist[index])
+
+        if all([isinstance(carried,Zero) for carried in carrylist]):
+
+            return sumlist
+
+        return self.add_digit_lists(sumlist, carrylist)
 
 ################################################################################
 ################################################################################
