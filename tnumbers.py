@@ -10,13 +10,6 @@ class Zero():
     to zero.
     '''
 
-    def __add__(self, other):
-        '''
-        Zero is the additive identity.
-        '''
-
-        return other
-
     def parity(self):
         '''
         Zero is an even number.
@@ -46,20 +39,6 @@ class One():
     Abstract one class. Reflects properties of one without direct references
     to one.
     '''
-
-    def __add__(self, other):
-        '''
-        Adding 1 returns the successor of other.
-        Only defined for other instances of Zero and One.
-        '''
-
-        if isinstance(other,Zero):
-
-            return self
-
-        elif isinstance(other,One):
-
-            return AbstractBinary([Zero(), One()])
 
     def parity(self):
         '''
