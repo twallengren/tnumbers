@@ -93,6 +93,8 @@ class AbstractBinary():
         Initialize abstract binary. Set digit list on self.
         '''
 
+        # list is reversed to optimize speed
+        # it is faster to append to end of list than push to front
         self.digits = digits[::-1]
 
     ############################################################################
